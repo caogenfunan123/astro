@@ -2,7 +2,7 @@
 export const SITE = {
   title: 'Astro 博客',
   description: '使用 Astro 搭建的静态博客',
-  url: 'https://astro-blog.example.com',
+  url: 'https://astro.caogenfunan.me',
 };
 
 // 导航配置
