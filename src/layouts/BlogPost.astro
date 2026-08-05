@@ -1,0 +1,50 @@
+---
+import { SITE } from '../config';
+
+export interface Props {
+  title: string;
+  pubDate: Date;
+  description?: string;
+}
+
+const { title, pubDate, description } = Astro.props;
+const formattedDate = new Intl.DateTimeFormat('zh-CN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format(pubDate);
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description ?? SITE.description} />
+    <title>{title} - {SITE.title}</title>
+  </head>
+  <body>
+    <header
+      style="padding:1rem 2rem;border-bottom:1px solid #eaeaea;"
+    >
+      <h1 style="margin:0;">
+        <a href="/" style="text-decoration:none;color:#ff5d01;">
+          {SITE.title}
+        </a>
+      </h1>
+    </header>
+    <main style="max-width:720px;margin:0 auto;padding:2rem;">
+      <a href="/">&larr; 返回首页</a>
+      <article style="margin-top:1rem;">
+        <h2>{title}</h2>
+        <small style="color:#888;">{formattedDate}</small>
+        <slot />
+      </article>
+    </main>
+    <footer
+      style="border-top:1px solid #eaeaea;padding:1rem 2rem;text-align:center;color:#888;"
+    >
+      <small>&copy; {new Date().getFullYear()} {SITE.title}</small>
+    </footer>
+  </body>
+</html>

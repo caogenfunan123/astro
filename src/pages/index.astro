@@ -1,0 +1,53 @@
+---
+import { SITE } from '../config';
+import { getCollection } from 'astro:content';
+import BlogPost from '../layouts/BlogPost.astro';
+
+// 获取所有博客文章并按日期降序排列
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={SITE.description} />
+    <title>{SITE.title}</title>
+  </head>
+  <body>
+    <header
+      style="padding:1rem 2rem;border-bottom:1px solid #eaeaea;"
+    >
+      <h1 style="margin:0;color:#ff5d01;">{SITE.title}</h1>
+      <p style="margin:0.5rem 0 0;color:#666;">{SITE.description}</p>
+    </header>
+    <main style="max-width:720px;margin:0 auto;padding:2rem;">
+      <h2>最新文章</h2>
+      <ul style="list-style:none;padding:0;">
+        {posts.map((post) => (
+          <li
+            style="margin:1.5rem 0;padding:1rem;border:1px solid #eaeaea;border-radius:8px;"
+          >
+            <h3 style="margin:0 0 0.5rem;">
+              <a href={`/blog/${post.slug}/`} style="color:#ff5d01;">
+                {post.data.title}
+              </a>
+            </h3>
+            <small style="color:#888;">
+              {new Intl.DateTimeFormat('zh-CN', { dateStyle: 'long' }).format(post.data.pubDate)}
+            </small>
+            <p style="margin:0.5rem 0 0;">{post.data.description}</p>
+          </li>
+        ))}
+      </ul>
+    </main>
+    <footer
+      style="border-top:1px solid #eaeaea;padding:1rem 2rem;text-align:center;color:#888;"
+    >
+      <small>&copy; {new Date().getFullYear()} {SITE.title}</small>
+    </footer>
+  </body>
+</html>
