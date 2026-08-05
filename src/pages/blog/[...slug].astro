@@ -1,18 +1,17 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
 
-// 预生成所有文章的静态路径
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
   return posts.map((post) => ({
-    params: { slug: post.slug },
+    params: { slug: post.id },
     props: { post },
   }));
 }
 
 const { post } = Astro.props;
-const { Content } = await getEntry(post.collection, post.slug);
+const { Content } = await render(post);
 const { title, pubDate, description } = post.data;
 ---
 
